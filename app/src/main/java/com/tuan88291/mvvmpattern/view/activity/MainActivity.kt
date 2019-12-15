@@ -16,7 +16,6 @@ import com.tuan88291.mvvmpattern.databinding.ActivityMainBinding
 import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
 import com.tuan88291.mvvmpattern.utils.observe.addTo
 import com.tuan88291.mvvmpattern.view.fragment.chat.ChatFragment
-import com.tuan88291.mvvmpattern.view.fragment.homefragment.HomeFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -44,8 +43,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         toggle.syncState()
 
         binding?.navView?.setNavigationItemSelectedListener(this)
-        binding?.appBar?.title?.text = "Call API"
-        addFragment(HomeFragment())
+        binding?.appBar?.title?.text = "Chat Socket"
+        addFragment(ChatFragment())
     }
 
     override fun onBackPressed() {
@@ -99,12 +98,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_camera -> {
-                binding?.appBar?.title?.text = "Call API"
-                addFragment(HomeFragment())
+                binding?.appBar?.title?.text = "Chat Socket"
+                addFragment(ChatFragment())
             }
             R.id.nav_gallery -> {
-                binding?.appBar?.title?.text = "Chat socket"
-                addFragment(ChatFragment())
 
             }
             R.id.nav_slideshow -> {

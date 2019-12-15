@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.tuan88291.mvvmpattern.di.RetrofitModule
 import com.tuan88291.mvvmpattern.di.dbModule
 import com.tuan88291.mvvmpattern.di.mvvmModule
+import com.tuan88291.mvvmpattern.di.socketModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,7 @@ class App : MultiDexApplication() {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
             androidFileProperties()
-            modules(listOf(dbModule, mvvmModule, RetrofitModule))
+            modules(listOf(dbModule, mvvmModule, RetrofitModule, socketModule))
         }
     }
 

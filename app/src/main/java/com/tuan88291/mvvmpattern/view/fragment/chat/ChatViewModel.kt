@@ -10,13 +10,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class ChatViewModel: ViewModel(), LifecycleObserver {
+class ChatViewModel(private val mSocket: Socket): ViewModel(), LifecycleObserver {
     private val isLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     private val listTyping: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val data: MutableLiveData<DataChat> by lazy { MutableLiveData<DataChat>() }
     private val allData: MutableLiveData<MutableList<DataChat>> by lazy { MutableLiveData<MutableList<DataChat>>() }
-//    private val mSocket: Socket by lazy { IO.socket("http://192.168.31.196:3000") }
-        private val mSocket: Socket by lazy { IO.socket("http://35.227.150.67:3000") }
     val mId: Int = (0..10).random()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

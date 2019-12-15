@@ -9,7 +9,7 @@ import com.tuan88291.mvvmpattern.data.remote.ApiGenerator
 import com.tuan88291.mvvmpattern.data.remote.service.ServiceApi
 import com.tuan88291.mvvmpattern.data.remote.service.iServiceApi
 import com.tuan88291.mvvmpattern.view.fragment.chat.ChatViewModel
-import com.tuan88291.mvvmpattern.view.fragment.homefragment.HomeViewModel
+import io.socket.client.IO
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,10 +20,12 @@ val dbModule = module {
     viewModel { DBmodel(get()) }
 }
 val mvvmModule = module {
-    viewModel { HomeViewModel(get()) }
-    viewModel { ChatViewModel() }
+    viewModel { ChatViewModel(get()) }
 }
 val RetrofitModule = module {
     single<iServiceApi> { ServiceApi() }
     single { ApiGenerator(get()) }
+}
+val socketModule = module {
+    single { IO.socket("http://192.168.31.196:3000") }
 }

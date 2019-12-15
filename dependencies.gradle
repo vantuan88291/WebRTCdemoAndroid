@@ -14,7 +14,7 @@ ext.arch = [
 ]
 ext.deps = [
         gradle_plugins: [
-                android: "com.android.tools.build:gradle:3.5.2",
+                android: "com.android.tools.build:gradle:3.5.3",
                 kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin_version"
         ],
 
