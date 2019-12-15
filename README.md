@@ -1,6 +1,6 @@
-# MVVM with databinding
+# Video Call App using MVVM with databinding, webrtc, socket IO
 
-Library: DI with koin, RXjava, room, mvvm, Rx retrofit
+Library: DI with koin, RXjava, room, mvvm, webrtc
 
 This app has a small example about chat with socket io using MVVM
 
@@ -35,4 +35,4 @@ packagename
 All lib in ```dependencies.gradle```
 
 
-To use socket demo, clone project and setup node server: https://github.com/vantuan88291/SocketServer
+To use socket for signal Server, clone project and setup node server: https://github.com/vantuan88291/WebRTCsignalServer
