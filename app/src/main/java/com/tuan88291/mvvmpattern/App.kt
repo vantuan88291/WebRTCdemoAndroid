@@ -33,6 +33,7 @@ class App : MultiDexApplication() {
     companion object {
         private var instance: App? = null
         private var gSon: Gson? = null
+        var isBackground: Boolean = true
 
         fun applicationContext() : Context {
             return instance!!.applicationContext

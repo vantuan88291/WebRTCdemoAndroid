@@ -3,7 +3,7 @@
     package="com.tuan88291.mvvmpattern">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.videocall.VideoCall"></activity>
+        <activity android:name=".view.activity.videocall.VideoCall"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -29,6 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".utils.service.SocketService"/>
+        <receiver android:name=".utils.broadcast.HandlerService" />
     </application>
 
 </manifest>

@@ -19,18 +19,11 @@ class ChatViewModel(private val mSocket: Socket): ViewModel(), LifecycleObserver
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreateSocket() {
-        mSocket.connect()
         mSocket.on("newmsg", onNewMsg)
         mSocket.on("allData", getAllData)
         mSocket.on("isTyping", onTyping)
         mSocket.emit("getAllData")
 
-    }
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun reConnectSocket() {
-        if (!mSocket.connected()) {
-            mSocket.connect()
-        }
     }
     fun sendMsg(msg: String) {
         val jsonObject = JSONObject()
@@ -87,9 +80,5 @@ class ChatViewModel(private val mSocket: Socket): ViewModel(), LifecycleObserver
     }
     fun getAllDataChat(): MutableLiveData<MutableList<DataChat>>{
         return this.allData
-    }
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onDestroySocket() {
-        mSocket.disconnect()
     }
 }

@@ -1,5 +1,13 @@
 package com.tuan88291.mvvmpattern.view.activity
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
@@ -7,12 +15,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.tuan88291.mvvmpattern.BaseActivity
 import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.Data
 import com.tuan88291.mvvmpattern.databinding.ActivityMainBinding
+import com.tuan88291.mvvmpattern.utils.Utils.startSocketService
 import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
 import com.tuan88291.mvvmpattern.utils.observe.addTo
 import com.tuan88291.mvvmpattern.view.fragment.chat.ChatFragment
@@ -29,6 +39,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startSocketService(this)
         autodis = AutoDisposable(this.lifecycle)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setSupportActionBar(binding?.appBar?.toolbar)
@@ -102,7 +113,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 addFragment(ChatFragment())
             }
             R.id.nav_gallery -> {
-
             }
             R.id.nav_slideshow -> {
 
