@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+apply from: rootProject.file("dependencies.gradle")
+android {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    compileSdkVersion versions.compile_sdk
+    defaultConfig {
+        applicationId versions.package
+        minSdkVersion versions.min_sdk
+        targetSdkVersion versions.compile_sdk
+        versionCode versions.publish_version_code
+        versionName versions.publish_version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.support.kotlin
+    implementation deps.support.app_compat
+    implementation deps.support.core
+    implementation deps.support.material
+    implementation deps.support.constraint_layout
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.core
+    implementation deps.support.sdp
+    implementation deps.perfomance.multidex
+    implementation deps.perfomance.rxjava
+    implementation deps.perfomance.rxandroid
+    implementation deps.resful.converter
+    implementation deps.resful.rx_retrofit
+    implementation deps.resful.retrofit2
+    implementation deps.resful.logd
+    implementation deps.resful.logging
+    implementation deps.db.runtime
+    kapt deps.db.compiler
+    androidTestImplementation deps.db.test
+    implementation deps.lifecycler.extension
+    implementation deps.lifecycler.viewmodel
+    implementation deps.lifecycler.java8
+    implementation deps.resful.gson
+    kapt deps.support.databinding
+    implementation deps.di.koin
+    implementation deps.di.koin_androix
+    implementation deps.di.koin_viewmodel
+    implementation (deps.resful.socket){
+        exclude group: 'org.json', module: 'json'
+    }
+    implementation deps.webrtc
+}
