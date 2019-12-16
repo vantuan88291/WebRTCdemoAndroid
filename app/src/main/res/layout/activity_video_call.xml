@@ -4,49 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data></data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activity.videocall.VideoCall">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/constraintLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/activity_video_call_xml_constraintlayout5_scene"
+        tools:context=".view.activity.videocall.VideoCall">
 
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/local_view"
+        <View
+            android:id="@+id/remoteView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/remote_view"
+        <View
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/localView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/local_view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintWidth_percent="0.4" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/callView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#660A0A0A"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/local_view"
-            app:layout_constraintTop_toTopOf="@+id/local_view">
+            app:layout_constraintStart_toStartOf="@+id/remoteView"
+            app:layout_constraintTop_toTopOf="@+id/remoteView">
 
             <TextView
                 android:id="@+id/call"
@@ -70,8 +68,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.50"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_cancel" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:srcCompat="@drawable/ic_cancel"
+            android:focusable="true" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

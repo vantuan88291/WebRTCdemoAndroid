@@ -19,6 +19,7 @@ class VideoCall : BaseActivity() {
         val id = getIntent().getIntExtra("id", 0)
         clearNotification()
         binding?.endCall?.setOnClickListener {
+//            binding?.constraintLayout5?.transitionToEnd()
             finish()
         }
 
