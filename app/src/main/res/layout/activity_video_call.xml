@@ -12,7 +12,7 @@
         app:layoutDescription="@xml/activity_video_call_xml_constraintlayout5_scene"
         tools:context=".view.activity.videocall.VideoCall">
 
-        <View
+        <org.webrtc.SurfaceViewRenderer
             android:id="@+id/remoteView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -23,8 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <View
-            android:background="@color/colorPrimaryDark"
+        <org.webrtc.SurfaceViewRenderer
             android:id="@+id/localView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -35,26 +34,28 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/callView"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="0dp"
             android:background="#660A0A0A"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/remoteView"
-            app:layout_constraintTop_toTopOf="@+id/remoteView">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:text="Calling..."
                 android:textColor="#fff"
                 android:textSize="@dimen/_18sdp" />
-        </RelativeLayout>
+        </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/endCall"
@@ -64,12 +65,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_16sdp"
             android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.50"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_cancel"
-            android:focusable="true" />
+            app:srcCompat="@drawable/ic_cancel" />
+
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

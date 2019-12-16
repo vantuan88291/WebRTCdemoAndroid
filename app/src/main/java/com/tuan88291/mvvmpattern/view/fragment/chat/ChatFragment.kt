@@ -1,5 +1,6 @@
 package com.tuan88291.mvvmpattern.view.fragment.chat
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +17,7 @@ import com.tuan88291.mvvmpattern.data.local.model.DataChat
 import com.tuan88291.mvvmpattern.databinding.AboutFragmentBinding
 import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
 import com.tuan88291.mvvmpattern.utils.observe.addTo
+import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -48,9 +50,10 @@ class ChatFragment : BaseFragment() {
         chatViewModel.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
         chatViewModel.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
         binding?.send?.setOnClickListener {
-            if (binding?.input?.text?.toString()!! == "") return@setOnClickListener
-            chatViewModel.sendMsg(binding?.input?.text?.toString()!!)
-            binding?.input?.setText("")
+//            if (binding?.input?.text?.toString()!! == "") return@setOnClickListener
+//            chatViewModel.sendMsg(binding?.input?.text?.toString()!!)
+//            binding?.input?.setText("")
+            startActivity(Intent(mContext(), VideoCall::class.java))
         }
         binding?.input?.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {

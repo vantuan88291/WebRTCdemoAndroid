@@ -50,7 +50,8 @@ class SocketService : LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForeground(notification_id, setNotification())
         }
-        startForeground(NOTIFY_ID, setUpCallHeadup())
+        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        notifyManager.notify(NOTIFY_ID, setUpCallHeadup())
     }
 
     override fun onDestroy() {
