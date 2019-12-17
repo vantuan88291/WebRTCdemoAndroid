@@ -44,7 +44,6 @@ class VideoCall : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
         val id = getIntent().getIntExtra("id", 0)
         binding?.endCall?.setOnClickListener {
-//            binding?.constraintLayout5?.transitionToEnd()
 //            finish()
             rtcClient?.call(sdpObserver)
 
@@ -61,11 +60,11 @@ class VideoCall : BaseActivity() {
     private fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
-//        binding?.constraintLayout5?.transitionToEnd()
+        binding?.constraintLayout5?.transitionToEnd()
     }
     private fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
-//        binding?.constraintLayout5?.transitionToEnd()
+        binding?.constraintLayout5?.transitionToEnd()
     }
     private fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)

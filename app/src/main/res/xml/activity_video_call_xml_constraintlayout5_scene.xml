@@ -9,7 +9,7 @@
         motion:duration="600">
         <KeyFrameSet>
         </KeyFrameSet>
-        <OnSwipe motion:dragDirection="dragUp"
+        <OnSwipe motion:dragDirection="dragDown"
             motion:touchAnchorId="@+id/localView" />
     </Transition>
     <ConstraintSet android:id="@+id/start">
@@ -33,7 +33,7 @@
             android:layout_height="0dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"/>
+            motion:layout_constraintHeight_percent="0.3"
+            motion:layout_constraintWidth_percent="0.4"/>
     </ConstraintSet>
 </MotionScene>
