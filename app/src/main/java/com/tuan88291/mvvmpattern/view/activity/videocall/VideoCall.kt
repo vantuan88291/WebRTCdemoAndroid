@@ -3,6 +3,7 @@ package com.tuan88291.mvvmpattern.view.activity.videocall
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -18,19 +19,18 @@ import com.tuan88291.mvvmpattern.utils.service.SocketService
 import com.tuan88291.mvvmpattern.utils.webrtc.AppSdpObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.PeerConnectionObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.RTCClient
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.SessionDescription
-import androidx.lifecycle.Observer
+import org.koin.android.ext.android.inject
 
-class VideoCall : BaseActivity() {
+class VideoCall : BaseActivity(), SignallingClientListener {
     private var binding: ActivityVideoCallBinding? = null
     private val CAMERA_PERMISSION_REQUEST_CODE = 101
     private val CAMERA_PERMISSION = Manifest.permission.CAMERA
     private val AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO
     private var rtcClient: RTCClient? = null
-    private val videoModel: VideoViewModel by viewModel()
+    private val videoModel: SocketClient by inject()
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
@@ -43,30 +43,40 @@ class VideoCall : BaseActivity() {
         lifecycle.addObserver(videoModel)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
         val id = getIntent().getIntExtra("id", 0)
-        binding?.endCall?.setOnClickListener {
-//            finish()
-            rtcClient?.call(sdpObserver)
-
-        }
+        videoModel.setCallback(this)
         checkCameraPermission()
-        setUpObserver()
-    }
-    fun setUpObserver() {
-        videoModel.onOfferReceived.observe(this, Observer<SessionDescription> { this.onOfferReceived(it) })
-        videoModel.onAnswerReceived.observe(this, Observer<SessionDescription> { this.onAnswerReceived(it) })
-        videoModel.onIceCandidateReceived.observe(this, Observer<IceCandidate> { this.onIceCandidateReceived(it) })
+        binding?.endCall?.setOnClickListener {
+            //            finish()
+//            rtcClient?.call(sdpObserver)
+            videoModel.onStartCall()
+        }
+        binding?.answer?.setOnClickListener {
+            videoModel.onStartAnswer()
+        }
+
     }
 
-    private fun onOfferReceived(data: SessionDescription) {
+    override fun onInComing() {
+        binding?.answer?.setSupportBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimaryDark)))
+    }
+
+    override fun onAnswerAccept() {
+        rtcClient?.call(sdpObserver)
+    }
+    override fun onConnectionEstablished() {
+
+    }
+
+    override fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
         binding?.constraintLayout5?.transitionToEnd()
     }
-    private fun onAnswerReceived(data: SessionDescription) {
+    override fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         binding?.constraintLayout5?.transitionToEnd()
     }
-    private fun onIceCandidateReceived(data: IceCandidate) {
+    override fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)
     }
     private fun checkCameraPermission() {
@@ -96,6 +106,7 @@ class VideoCall : BaseActivity() {
         rtcClient?.initSurfaceView(binding?.remoteView!!)
         rtcClient?.initSurfaceView(binding?.localView!!)
         rtcClient?.startLocalVideoCapture(binding?.localView!!)
+
     }
     private fun requestCameraPermission(dialogShown: Boolean = false) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, CAMERA_PERMISSION) && !dialogShown) {
