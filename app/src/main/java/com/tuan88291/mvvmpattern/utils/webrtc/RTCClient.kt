@@ -176,4 +176,7 @@ class RTCClient(
     fun addIceCandidate(iceCandidate: IceCandidate?) {
         peerConnection?.addIceCandidate(iceCandidate)
     }
+    fun close() {
+        peerConnection?.close()
+    }
 }

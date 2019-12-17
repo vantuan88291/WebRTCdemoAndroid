@@ -50,13 +50,14 @@ class SocketService : LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForeground(notification_id, setNotification())
         }
-        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 //        notifyManager.notify(NOTIFY_ID, setUpCallHeadup())
     }
 
     override fun onDestroy() {
         super.onDestroy()
         checkrunning = false
+        mSocket.emit("clearUser", Build.MODEL)
         mSocket.disconnect()
     }
     private fun setUpCallHeadup(): Notification {

@@ -18,9 +18,11 @@ import com.tuan88291.mvvmpattern.utils.service.SocketService
 import com.tuan88291.mvvmpattern.utils.webrtc.AppSdpObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.PeerConnectionObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.RTCClient
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.SessionDescription
+import androidx.lifecycle.Observer
 
 class VideoCall : BaseActivity() {
     private var binding: ActivityVideoCallBinding? = null
@@ -28,25 +30,46 @@ class VideoCall : BaseActivity() {
     private val CAMERA_PERMISSION = Manifest.permission.CAMERA
     private val AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO
     private var rtcClient: RTCClient? = null
+    private val videoModel: VideoViewModel by viewModel()
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
-//            signallingClient?.send(p0)
+            videoModel.onCallVideo(p0)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
+        lifecycle.addObserver(videoModel)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
         val id = getIntent().getIntExtra("id", 0)
         binding?.endCall?.setOnClickListener {
 //            binding?.constraintLayout5?.transitionToEnd()
-            finish()
+//            finish()
+            rtcClient?.call(sdpObserver)
+
         }
         checkCameraPermission()
-
+        setUpObserver()
+    }
+    fun setUpObserver() {
+        videoModel.onOfferReceived.observe(this, Observer<SessionDescription> { this.onOfferReceived(it) })
+        videoModel.onAnswerReceived.observe(this, Observer<SessionDescription> { this.onAnswerReceived(it) })
+        videoModel.onIceCandidateReceived.observe(this, Observer<IceCandidate> { this.onIceCandidateReceived(it) })
     }
 
+    private fun onOfferReceived(data: SessionDescription) {
+        rtcClient?.onRemoteSessionReceived(data)
+        rtcClient?.answer(sdpObserver)
+        binding?.constraintLayout5?.transitionToEnd()
+    }
+    private fun onAnswerReceived(data: SessionDescription) {
+        rtcClient?.onRemoteSessionReceived(data)
+        binding?.constraintLayout5?.transitionToEnd()
+    }
+    private fun onIceCandidateReceived(data: IceCandidate) {
+        rtcClient?.addIceCandidate(data)
+    }
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, CAMERA_PERMISSION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, AUDIO_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission()
@@ -61,7 +84,7 @@ class VideoCall : BaseActivity() {
             object : PeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
-//                    signallingClient?.send(p0)
+                    videoModel.onCallVideo(p0)
                     rtcClient?.addIceCandidate(p0)
                 }
 
@@ -74,7 +97,6 @@ class VideoCall : BaseActivity() {
         rtcClient?.initSurfaceView(binding?.remoteView!!)
         rtcClient?.initSurfaceView(binding?.localView!!)
         rtcClient?.startLocalVideoCapture(binding?.localView!!)
-//        call_button.setOnClickListener { rtcClient.call(sdpObserver) }
     }
     private fun requestCameraPermission(dialogShown: Boolean = false) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, CAMERA_PERMISSION) && !dialogShown) {
@@ -100,11 +122,24 @@ class VideoCall : BaseActivity() {
     private fun onCameraPermissionDenied() {
         Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_LONG).show()
     }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            onCameraPermissionGranted()
+        } else {
+            onCameraPermissionDenied()
+        }
+    }
     private fun clearNotification() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             this.startForegroundService(Intent(this, SocketService::class.java).setAction("STOP_ACTION"))
         } else {
             this.startService(Intent(this, SocketService::class.java).setAction("STOP_ACTION"))
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        rtcClient?.close()
     }
 }
