@@ -61,11 +61,11 @@ class VideoCall : BaseActivity() {
     private fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
-        binding?.constraintLayout5?.transitionToEnd()
+//        binding?.constraintLayout5?.transitionToEnd()
     }
     private fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
-        binding?.constraintLayout5?.transitionToEnd()
+//        binding?.constraintLayout5?.transitionToEnd()
     }
     private fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)
