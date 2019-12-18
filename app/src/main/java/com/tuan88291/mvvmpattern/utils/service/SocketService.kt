@@ -13,7 +13,6 @@ import com.tuan88291.mvvmpattern.utils.Common.CHANNEL_ID
 import com.tuan88291.mvvmpattern.utils.Common.CHANNEL_ID_FORGROUND
 import com.tuan88291.mvvmpattern.utils.Common.CHANNEL_NAME
 import com.tuan88291.mvvmpattern.utils.Common.NOTIFY_ID
-import com.tuan88291.mvvmpattern.utils.Common.NOTIFY_ID_CALL_VIDEO
 import com.tuan88291.mvvmpattern.utils.broadcast.HandlerService
 import com.tuan88291.mvvmpattern.view.activity.MainActivity
 import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
@@ -55,16 +54,16 @@ class SocketService : LifecycleService() {
     private val onInComing = object : Emitter.Listener {
 
         override fun call(vararg args: Any?) {
-            notifyManager?.notify(NOTIFY_ID_CALL_VIDEO, setUpCallHeadup())
+            val NOTIFY_ID_CALL_VIDEO = (System.currentTimeMillis() / 1000).toInt()
+            notifyManager?.notify(NOTIFY_ID_CALL_VIDEO, setUpCallHeadup(args[0].toString(), NOTIFY_ID_CALL_VIDEO))
         }
     }
     override fun onDestroy() {
         super.onDestroy()
         checkrunning = false
-        mSocket.emit("clearUser", Build.MODEL)
         mSocket.disconnect()
     }
-    private fun setUpCallHeadup(): Notification {
+    private fun setUpCallHeadup(model: String, idNotify: Int): Notification {
         val intent: Intent
         val pendingIntent: PendingIntent
         val builder: NotificationCompat.Builder
@@ -87,9 +86,9 @@ class SocketService : LifecycleService() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
-        builder.setContentTitle("One call comming...")  // required
-            .setSmallIcon(R.drawable.ic_call) // required
-            .setContentText("Some one call you")  // required
+        builder.setContentTitle("One call comming...")
+            .setSmallIcon(R.drawable.ic_call)
+            .setContentText("$model is calling you...")
             .setDefaults(Notification.DEFAULT_SOUND)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
@@ -97,14 +96,15 @@ class SocketService : LifecycleService() {
             .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
 
         val dismissIntent = Intent(this, HandlerService::class.java)
-        dismissIntent.putExtra("id", NOTIFY_ID_CALL_VIDEO)
+        dismissIntent.putExtra("id", idNotify)
         dismissIntent.putExtra("type", "cancel")
-        val pendingDismissIntent = PendingIntent.getBroadcast(this, NOTIFY_ID_CALL_VIDEO,
+        val pendingDismissIntent = PendingIntent.getBroadcast(this, idNotify,
             dismissIntent, 0);
 
         val aCceptintent = Intent(this, VideoCall::class.java)
-        aCceptintent.putExtra("id", NOTIFY_ID_CALL_VIDEO)
-        val answerIntent = PendingIntent.getActivity(this, 0, aCceptintent, 0)
+        aCceptintent.putExtra("id", idNotify)
+        aCceptintent.putExtra("model", model)
+        val answerIntent = PendingIntent.getActivity(this, idNotify, aCceptintent, 0)
 
         val dismissAction = NotificationCompat.Action(R.drawable.ic_cancel,
             "Denied", pendingDismissIntent)

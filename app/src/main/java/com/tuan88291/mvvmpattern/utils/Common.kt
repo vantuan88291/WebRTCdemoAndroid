@@ -5,7 +5,6 @@ import android.Manifest
 object Common {
     val DOMAIN = "https://reqres.in/api/"
     val SHARED_PREFERENCE_NAME = "AppName"
-    val NOTIFY_ID_CALL_VIDEO = 12051451
     val NOTIFY_ID = 1273485
     val CHANNEL_NAME = "WebrtcApp"
     val CHANNEL_ID = "Webrtc_app"

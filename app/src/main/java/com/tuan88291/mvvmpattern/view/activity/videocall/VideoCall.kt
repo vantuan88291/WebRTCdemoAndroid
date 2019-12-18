@@ -5,22 +5,16 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import com.tuan88291.mvvmpattern.BaseActivity
 import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.databinding.ActivityVideoCallBinding
-import com.tuan88291.mvvmpattern.utils.Common
 import com.tuan88291.mvvmpattern.utils.Common.AUDIO_PERMISSION
 import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION
 import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION_REQUEST_CODE
@@ -36,10 +30,11 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     private var binding: ActivityVideoCallBinding? = null
     private var rtcClient: RTCClient? = null
     private val videoModel: SocketClient by inject()
+    private var model: String = ""
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
-            videoModel.onCallVideo(p0)
+            videoModel.onCallVideo(p0, model)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,14 +52,16 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     private fun checkIsCalling() {
         val id = getIntent().getIntExtra("id", 0)
         val model = getIntent().getStringExtra("model")
-        if (id == Common.NOTIFY_ID_CALL_VIDEO) {
-            videoModel.onStartAnswer()
+        if (id != 0) {
+            this.model = if (model != null) model else ""
+            videoModel.onStartAnswer(this.model)
             clearNotification(id)
             return
         }
         if (model != null) {
+            this.model = model
             Toast.makeText(this, "Calling to $model ...", Toast.LENGTH_SHORT).show()
-            videoModel.onStartCall()
+            videoModel.onStartCall(model)
         }
     }
 
@@ -97,7 +94,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
             object : PeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
-                    videoModel.onCallVideo(p0)
+                    videoModel.onCallVideo(p0, model)
                     rtcClient?.addIceCandidate(p0)
                 }
 

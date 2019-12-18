@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.tuan88291.mvvmpattern.data.local.model.DataCall
+import com.tuan88291.mvvmpattern.data.local.model.DataModel
 import com.tuan88291.mvvmpattern.utils.Utils
 import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
 import com.tuan88291.mvvmpattern.utils.observe.ObserveEasy
@@ -26,29 +27,20 @@ class SocketClient(private val mSocket: Socket): LifecycleObserver {
     fun onCreateSocket() {
         mSocket.on("Received", onReceived)
         mSocket.on("onAnswerAccept", onAnswerAccept)
-//        mSocket.on("inComing", onInComing)
     }
     fun setCallback(callback: SignallingClientListener) {
         this.callbacks = callback
     }
-    fun onCallVideo(data: Any?) {
-        val dataSt = DataCall(Build.MODEL, gson.toJson(data))
+    fun onCallVideo(data: Any?, model: String) {
+        val dataSt = DataCall(model, gson.toJson(data))
         mSocket.emit("call", gson.toJson(dataSt))
     }
-    fun onStartCall() {
-        mSocket.emit("startCall", Build.MODEL)
+    fun onStartCall(model: String) {
+        mSocket.emit("startCall", gson.toJson(DataModel(Build.MODEL, model)))
     }
-    fun onStartAnswer() {
-        mSocket.emit("startAnswer", Build.MODEL)
+    fun onStartAnswer(model: String) {
+        mSocket.emit("startAnswer", gson.toJson(DataModel(model, Build.MODEL)))
     }
-//    private val onInComing = object : Emitter.Listener {
-//
-//        override fun call(vararg args: Any?) {
-//            Handler(Looper.getMainLooper()).post {
-//                callbacks?.onInComing()
-//            }
-//        }
-//    }
     private val onAnswerAccept = object : Emitter.Listener {
 
         override fun call(vararg args: Any?) {
