@@ -97,6 +97,7 @@ class SocketService : LifecycleService() {
 
         val dismissIntent = Intent(this, HandlerService::class.java)
         dismissIntent.putExtra("id", idNotify)
+        dismissIntent.putExtra("model", model)
         dismissIntent.putExtra("type", "cancel")
         val pendingDismissIntent = PendingIntent.getBroadcast(this, idNotify,
             dismissIntent, 0);
