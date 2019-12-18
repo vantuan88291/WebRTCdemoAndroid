@@ -3,7 +3,7 @@
 Library: DI with koin, RXjava, mvvm, webrtc, Socket IO
 
 ## Overview
-![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img1.jpeg)![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img2.jpeg)
+![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img2.jpeg)![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img1.jpeg)
 
 
 ## Explanation of folder structure
