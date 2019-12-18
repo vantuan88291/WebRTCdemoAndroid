@@ -72,11 +72,11 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     override fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
-        binding?.constraintLayout5.transitionToEnd()
+        binding?.constraintLayout5?.transitionToEnd()
     }
     override fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
-        binding?.constraintLayout5.transitionToEnd()
+        binding?.constraintLayout5?.transitionToEnd()
     }
     override fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)

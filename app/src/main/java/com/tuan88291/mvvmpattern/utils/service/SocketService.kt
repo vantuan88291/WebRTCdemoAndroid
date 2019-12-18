@@ -1,9 +1,12 @@
 package com.tuan88291.mvvmpattern.utils.service
 
 import android.app.*
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -64,6 +67,7 @@ class SocketService : LifecycleService() {
         mSocket.disconnect()
     }
     private fun setUpCallHeadup(model: String, idNotify: Int): Notification {
+        val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.tune)
         val intent: Intent
         val pendingIntent: PendingIntent
         val builder: NotificationCompat.Builder
@@ -71,11 +75,17 @@ class SocketService : LifecycleService() {
             val importance = NotificationManager.IMPORTANCE_HIGH
             var mChannel = notifyManager?.getNotificationChannel(CHANNEL_ID)
             if (mChannel == null) {
+                val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build()
                 mChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
                 mChannel.description = description
                 mChannel.enableVibration(true)
                 mChannel.lightColor = Color.GREEN
+                mChannel.setSound(soundUri, audioAttributes)
                 mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+
                 notifyManager?.createNotificationChannel(mChannel)
             }
         }
@@ -91,6 +101,7 @@ class SocketService : LifecycleService() {
             .setContentText("$model is calling you...")
             .setDefaults(Notification.DEFAULT_SOUND)
             .setAutoCancel(true)
+            .setSound(soundUri)
             .setContentIntent(pendingIntent)
             .setTicker("Notifications")
             .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
