@@ -15,6 +15,7 @@ import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.DataChat
 import com.tuan88291.mvvmpattern.databinding.AboutFragmentBinding
 import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
+import com.tuan88291.mvvmpattern.view.activity.voicecall.VoiceCall
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -62,6 +63,10 @@ class ChatFragment : BaseFragment() {
         binding?.list?.clickCall = {item: DataChat, isVideo: Boolean ->
             if (isVideo) {
                 val intent = Intent(mContext(), VideoCall::class.java)
+                intent.putExtra("model", item.name)
+                startActivity(intent)
+            } else {
+                val intent = Intent(mContext(), VoiceCall::class.java)
                 intent.putExtra("model", item.name)
                 startActivity(intent)
             }

@@ -3,10 +3,11 @@
     package="com.tuan88291.mvvmpattern">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -16,8 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.videocall.VideoCall"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".view.activity.voicecall.VoiceCall"></activity>
+        <activity
+            android:name=".view.activity.videocall.VideoCall"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -33,7 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".utils.service.SocketService"/>
+
+        <service android:name=".utils.service.SocketService" />
+
         <receiver android:name=".utils.broadcast.HandlerService" />
     </application>
 
