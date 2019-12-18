@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -45,10 +46,14 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         videoModel.setCallback(this)
         checkCameraPermission()
         binding?.endCall?.setOnClickListener {
+            videoModel.endCall(this.model)
             finish()
         }
     }
 
+    override fun onEndCall() {
+        finish()
+    }
     private fun checkIsCalling() {
         val id = getIntent().getIntExtra("id", 0)
         val model = getIntent().getStringExtra("model")
@@ -60,7 +65,6 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         }
         if (model != null) {
             this.model = model
-            Toast.makeText(this, "Calling to $model ...", Toast.LENGTH_SHORT).show()
             videoModel.onStartCall(model)
         }
     }
@@ -71,11 +75,15 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     override fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
-        binding?.constraintLayout5?.transitionToEnd()
+        binding?.apply {
+            constraintLayout5.transitionToEnd()
+        }
     }
     override fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
-        binding?.constraintLayout5?.transitionToEnd()
+        binding?.apply {
+            constraintLayout5.transitionToEnd()
+        }
     }
     override fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)

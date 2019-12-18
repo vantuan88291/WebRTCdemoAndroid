@@ -27,6 +27,7 @@ class SocketClient(private val mSocket: Socket): LifecycleObserver {
     fun onCreateSocket() {
         mSocket.on("Received", onReceived)
         mSocket.on("onAnswerAccept", onAnswerAccept)
+        mSocket.on("onEndCall", onEndCall)
     }
     fun setCallback(callback: SignallingClientListener) {
         this.callbacks = callback
@@ -41,11 +42,22 @@ class SocketClient(private val mSocket: Socket): LifecycleObserver {
     fun onStartAnswer(model: String) {
         mSocket.emit("startAnswer", gson.toJson(DataModel(model, Build.MODEL)))
     }
+    fun endCall(model: String) {
+        mSocket.emit("endCall", model)
+    }
     private val onAnswerAccept = object : Emitter.Listener {
 
         override fun call(vararg args: Any?) {
             Handler(Looper.getMainLooper()).post {
                 callbacks?.onAnswerAccept()
+            }
+        }
+    }
+    private val onEndCall = object : Emitter.Listener {
+
+        override fun call(vararg args: Any?) {
+            Handler(Looper.getMainLooper()).post {
+                callbacks?.onEndCall()
             }
         }
     }

@@ -6,20 +6,33 @@
     android:layout_height="match_parent">
 
     <org.webrtc.SurfaceViewRenderer
-        android:id="@+id/remoteView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/localView"
+        android:layout_width="411dp"
+        android:layout_height="731dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <org.webrtc.SurfaceViewRenderer
-        android:id="@+id/localView"
+    <FrameLayout
+        android:id="@+id/callView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#AD0A0A0A"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintHeight_percent="0.0"
+        app:layout_constraintWidth_percent="0.0">
+
+        <TextView
+            android:id="@+id/call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Calling..."
+            android:textColor="#fff"
+            android:textSize="@dimen/_18sdp" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
