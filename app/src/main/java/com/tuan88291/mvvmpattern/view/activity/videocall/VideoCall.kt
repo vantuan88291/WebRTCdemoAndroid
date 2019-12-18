@@ -4,6 +4,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,16 +21,24 @@ import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION_REQUEST_CODE
 import com.tuan88291.mvvmpattern.utils.webrtc.AppSdpObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.PeerConnectionObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.RTCClient
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.SessionDescription
 import org.koin.android.ext.android.inject
+import org.reactivestreams.Subscription
+import java.util.concurrent.TimeUnit
 
 class VideoCall : BaseActivity(), SignallingClientListener {
     private var binding: ActivityVideoCallBinding? = null
     private var rtcClient: RTCClient? = null
     private val videoModel: SocketClient by inject()
     private var model: String = ""
+    private var task: Disposable? = null
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
@@ -63,10 +73,22 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         if (model != null) {
             this.model = model
             videoModel.onStartCall(model)
+            task = Observable.timer(60000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    Toast.makeText(this, "Not answer!", Toast.LENGTH_SHORT).show()
+                    videoModel.endCall(this.model)
+                    rtcClient?.close()
+                    Handler().postDelayed({
+                        finish()
+                    }, 2000)
+                }
         }
     }
 
     override fun onAnswerAccept() {
+        task?.dispose()
         rtcClient?.call(sdpObserver)
     }
     override fun onOfferReceived(data: SessionDescription) {

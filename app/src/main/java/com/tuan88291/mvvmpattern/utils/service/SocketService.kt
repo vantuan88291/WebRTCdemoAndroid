@@ -8,7 +8,9 @@ import android.graphics.Color
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import com.tuan88291.mvvmpattern.R
@@ -53,12 +55,19 @@ class SocketService : LifecycleService() {
     private fun setupSocket() {
         mSocket.connect()
         mSocket.on("inComing", onInComing)
+        mSocket.on("onEndCall", onEndCall)
     }
     private val onInComing = object : Emitter.Listener {
 
         override fun call(vararg args: Any?) {
             val NOTIFY_ID_CALL_VIDEO = (System.currentTimeMillis() / 1000).toInt()
             notifyManager?.notify(NOTIFY_ID_CALL_VIDEO, setUpCallHeadup(args[0].toString(), NOTIFY_ID_CALL_VIDEO))
+        }
+    }
+    private val onEndCall = object : Emitter.Listener {
+
+        override fun call(vararg args: Any?) {
+            notifyManager?.cancelAll()
         }
     }
     override fun onDestroy() {
