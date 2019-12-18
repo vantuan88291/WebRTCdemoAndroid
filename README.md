@@ -1,8 +1,7 @@
 # Video Call App using MVVM with databinding, webrtc, socket IO
 
-Library: DI with koin, RXjava, room, mvvm, webrtc
+Library: DI with koin, RXjava, mvvm, webrtc, Socket IO
 
-This app has a small example about chat with socket io using MVVM
 
 ## Explanation of folder structure
 
@@ -34,5 +33,8 @@ packagename
 
 All lib in ```dependencies.gradle```
 
+Change your wifi IP address at AppModule.kt:
+
+```IO.socket("http://192.168.0.162:3000", opts)```
 
 To use socket for signal Server, clone project and setup node server: https://github.com/vantuan88291/WebRTCsignalServer
