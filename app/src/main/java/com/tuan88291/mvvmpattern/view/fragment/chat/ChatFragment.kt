@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,8 @@ import com.tuan88291.mvvmpattern.BaseFragment
 import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.DataChat
 import com.tuan88291.mvvmpattern.databinding.AboutFragmentBinding
-import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
-import com.tuan88291.mvvmpattern.utils.observe.addTo
 import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 
 class ChatFragment : BaseFragment() {
