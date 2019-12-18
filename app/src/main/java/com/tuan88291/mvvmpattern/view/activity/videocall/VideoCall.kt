@@ -1,12 +1,9 @@
 package com.tuan88291.mvvmpattern.view.activity.videocall
 
-import android.Manifest
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -75,15 +72,11 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     override fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
-        binding?.apply {
-            constraintLayout5.transitionToEnd()
-        }
+        binding?.constraintLayout5.transitionToEnd()
     }
     override fun onAnswerReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
-        binding?.apply {
-            constraintLayout5.transitionToEnd()
-        }
+        binding?.constraintLayout5.transitionToEnd()
     }
     override fun onIceCandidateReceived(data: IceCandidate) {
         rtcClient?.addIceCandidate(data)
