@@ -4,8 +4,6 @@ import org.webrtc.IceCandidate
 import org.webrtc.SessionDescription
 
 interface SignallingClientListener {
-    fun onConnectionEstablished()
-    fun onInComing()
     fun onAnswerAccept()
     fun onOfferReceived(description: SessionDescription)
     fun onAnswerReceived(description: SessionDescription)

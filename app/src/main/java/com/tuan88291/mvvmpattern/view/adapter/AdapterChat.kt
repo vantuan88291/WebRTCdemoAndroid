@@ -2,9 +2,12 @@ package com.tuan88291.mvvmpattern.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.tuan88291.mvvmpattern.BR
+import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.DataChat
 import com.tuan88291.mvvmpattern.databinding.ItemChatFriendBinding
 import com.tuan88291.mvvmpattern.databinding.ItemChatYouBinding
@@ -14,6 +17,7 @@ class AdapterChat(private val context: Context) : RecyclerView.Adapter<RecyclerV
     private val inflater: LayoutInflater
     internal var data = mutableListOf<DataChat>()
     private var name: String? = null
+    var clickCall: ((DataChat, Boolean)->Unit)? = null
     init {
         inflater = LayoutInflater.from(context)
     }
@@ -42,6 +46,23 @@ class AdapterChat(private val context: Context) : RecyclerView.Adapter<RecyclerV
         } else {
             val mHolder = holder as FriendHolder
             mHolder.bind(item!!)
+            val popupMenu = PopupMenu(context, mHolder.binding?.call!!)
+            popupMenu.inflate(R.menu.menu_popup)
+            mHolder.binding?.call?.setOnLongClickListener {
+                popupMenu.show()
+                return@setOnLongClickListener true
+            }
+            popupMenu.setOnMenuItemClickListener(
+                object : PopupMenu.OnMenuItemClickListener {
+                    override fun onMenuItemClick(items: MenuItem): Boolean {
+                        when (items.getItemId()) {
+                            R.id.callVideo -> clickCall?.invoke(item, true)
+                            R.id.callVoice -> clickCall?.invoke(item, false)
+                        }
+                        return true
+                    }
+                })
+
         }
     }
 

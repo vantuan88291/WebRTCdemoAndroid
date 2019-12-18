@@ -1,21 +1,29 @@
 package com.tuan88291.mvvmpattern.view.activity.videocall
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import com.tuan88291.mvvmpattern.BaseActivity
 import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.databinding.ActivityVideoCallBinding
-import com.tuan88291.mvvmpattern.utils.service.SocketService
+import com.tuan88291.mvvmpattern.utils.Common
+import com.tuan88291.mvvmpattern.utils.Common.AUDIO_PERMISSION
+import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION
+import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION_REQUEST_CODE
 import com.tuan88291.mvvmpattern.utils.webrtc.AppSdpObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.PeerConnectionObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.RTCClient
@@ -26,9 +34,6 @@ import org.koin.android.ext.android.inject
 
 class VideoCall : BaseActivity(), SignallingClientListener {
     private var binding: ActivityVideoCallBinding? = null
-    private val CAMERA_PERMISSION_REQUEST_CODE = 101
-    private val CAMERA_PERMISSION = Manifest.permission.CAMERA
-    private val AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO
     private var rtcClient: RTCClient? = null
     private val videoModel: SocketClient by inject()
     private val sdpObserver = object : AppSdpObserver() {
@@ -42,31 +47,30 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(videoModel)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
-        val id = getIntent().getIntExtra("id", 0)
         videoModel.setCallback(this)
         checkCameraPermission()
         binding?.endCall?.setOnClickListener {
-            //            finish()
-//            rtcClient?.call(sdpObserver)
-            videoModel.onStartCall()
+            finish()
         }
-        binding?.answer?.setOnClickListener {
-            videoModel.onStartAnswer()
-        }
-
     }
 
-    override fun onInComing() {
-        binding?.answer?.setSupportBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimaryDark)))
+    private fun checkIsCalling() {
+        val id = getIntent().getIntExtra("id", 0)
+        val model = getIntent().getStringExtra("model")
+        if (id == Common.NOTIFY_ID_CALL_VIDEO) {
+            videoModel.onStartAnswer()
+            clearNotification(id)
+            return
+        }
+        if (model != null) {
+            Toast.makeText(this, "Calling to $model ...", Toast.LENGTH_SHORT).show()
+            videoModel.onStartCall()
+        }
     }
 
     override fun onAnswerAccept() {
         rtcClient?.call(sdpObserver)
     }
-    override fun onConnectionEstablished() {
-
-    }
-
     override fun onOfferReceived(data: SessionDescription) {
         rtcClient?.onRemoteSessionReceived(data)
         rtcClient?.answer(sdpObserver)
@@ -106,6 +110,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         rtcClient?.initSurfaceView(binding?.remoteView!!)
         rtcClient?.initSurfaceView(binding?.localView!!)
         rtcClient?.startLocalVideoCapture(binding?.localView!!)
+        checkIsCalling()
 
     }
     private fun requestCameraPermission(dialogShown: Boolean = false) {
@@ -140,12 +145,9 @@ class VideoCall : BaseActivity(), SignallingClientListener {
             onCameraPermissionDenied()
         }
     }
-    private fun clearNotification() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            this.startForegroundService(Intent(this, SocketService::class.java).setAction("STOP_ACTION"))
-        } else {
-            this.startService(Intent(this, SocketService::class.java).setAction("STOP_ACTION"))
-        }
+    private fun clearNotification(id: Int) {
+        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notifyManager.cancel(id)
     }
 
     override fun onStop() {

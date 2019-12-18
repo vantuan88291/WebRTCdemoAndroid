@@ -14,11 +14,7 @@ class HandlerService: BroadcastReceiver() {
         val type = p1?.getExtras()?.getString("type")!!
         val id_notify = p1.getExtras()?.getInt("id")!!
         if (type == "cancel") {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-                p0?.startForegroundService(Intent(p0, SocketService::class.java).setAction("STOP_ACTION"))
-            } else {
-                p0?.startService(Intent(p0, SocketService::class.java).setAction("STOP_ACTION"))
-            }
+
         }
 
         val closeDialog = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)

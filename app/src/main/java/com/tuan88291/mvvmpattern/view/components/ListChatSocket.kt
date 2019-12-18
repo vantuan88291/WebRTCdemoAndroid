@@ -10,7 +10,7 @@ import com.tuan88291.mvvmpattern.view.adapter.AdapterChat
 class ListChatSocket(context: Context, attrs: AttributeSet) : RecyclerView(context, attrs) {
     private var mLayoutManager: LinearLayoutManager? = null
     private var mAdapter: AdapterChat? = null
-
+    var clickCall: ((DataChat, Boolean)->Unit)? = null
     init {
         setUpList(context)
     }
@@ -21,6 +21,9 @@ class ListChatSocket(context: Context, attrs: AttributeSet) : RecyclerView(conte
         this.apply {
             adapter = mAdapter
             layoutManager = mLayoutManager
+        }
+        mAdapter?.clickCall = {item: DataChat, isVideo: Boolean ->
+            clickCall?.invoke(item, isVideo)
         }
     }
     fun setmId(name: String) {

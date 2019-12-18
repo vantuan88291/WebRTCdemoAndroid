@@ -32,7 +32,7 @@ val socketModule = module {
     single {
         val opts = IO.Options()
         opts.query = "model=" + Build.MODEL
-        IO.socket("http://192.168.31.196:3000", opts)
+        IO.socket("http://192.168.0.162:3000", opts)
     }
     factory { SocketClient(get()) }
 }

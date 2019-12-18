@@ -50,10 +50,9 @@ class ChatFragment : BaseFragment() {
         chatViewModel.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
         chatViewModel.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
         binding?.send?.setOnClickListener {
-//            if (binding?.input?.text?.toString()!! == "") return@setOnClickListener
-//            chatViewModel.sendMsg(binding?.input?.text?.toString()!!)
-//            binding?.input?.setText("")
-            startActivity(Intent(mContext(), VideoCall::class.java))
+            if (binding?.input?.text?.toString()!! == "") return@setOnClickListener
+            chatViewModel.sendMsg(binding?.input?.text?.toString()!!)
+            binding?.input?.setText("")
         }
         binding?.input?.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
@@ -68,6 +67,13 @@ class ChatFragment : BaseFragment() {
             }
 
         })
+        binding?.list?.clickCall = {item: DataChat, isVideo: Boolean ->
+            if (isVideo) {
+                val intent = Intent(mContext(), VideoCall::class.java)
+                intent.putExtra("model", item.name)
+                startActivity(intent)
+            }
+        }
         mContext()?.setUpTyping()
     }
 
