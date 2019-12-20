@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.voicecall.VoiceCall"></activity>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".view.activity.voicecall.VoiceCall"></activity>
         <activity
             android:name=".view.activity.videocall.VideoCall"
             android:theme="@style/AppTheme.NoActionBar" />

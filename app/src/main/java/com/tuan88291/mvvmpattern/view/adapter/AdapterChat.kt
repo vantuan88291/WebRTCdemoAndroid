@@ -48,9 +48,8 @@ class AdapterChat(private val context: Context) : RecyclerView.Adapter<RecyclerV
             mHolder.bind(item!!)
             val popupMenu = PopupMenu(context, mHolder.binding?.call!!)
             popupMenu.inflate(R.menu.menu_popup)
-            mHolder.binding?.call?.setOnLongClickListener {
+            mHolder.binding?.call?.setOnClickListener {
                 popupMenu.show()
-                return@setOnLongClickListener true
             }
             popupMenu.setOnMenuItemClickListener(
                 object : PopupMenu.OnMenuItemClickListener {

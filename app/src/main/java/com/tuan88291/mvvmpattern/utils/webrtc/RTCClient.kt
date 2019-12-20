@@ -67,7 +67,13 @@ class RTCClient(
         iceServer,
         observer
     )
+    fun setFrontCamera() {
+        try {
+            videoCapturer.switchCamera(null)
+        }catch (e: Exception){
 
+        }
+    }
     private fun getVideoCapturer(context: Context) =
         Camera2Enumerator(context).run {
             deviceNames.find {

@@ -23,6 +23,7 @@ import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.Data
 import com.tuan88291.mvvmpattern.databinding.ActivityMainBinding
 import com.tuan88291.mvvmpattern.utils.Utils.startSocketService
+import com.tuan88291.mvvmpattern.utils.Utils.stopSocketService
 import com.tuan88291.mvvmpattern.utils.observe.AutoDisposable
 import com.tuan88291.mvvmpattern.utils.observe.addTo
 import com.tuan88291.mvvmpattern.view.fragment.chat.ChatFragment
@@ -100,7 +101,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> {
+                stopSocketService(this)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }

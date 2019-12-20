@@ -57,6 +57,7 @@ ext.deps = [
                 kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin_version",
                 databinding: "com.android.databinding:compiler:3.3.1",
                 sdp: "com.intuit.sdp:sdp-android:1.0.6",
+                image: 'de.hdodenhof:circleimageview:3.0.1',
         ],
 
         test: [

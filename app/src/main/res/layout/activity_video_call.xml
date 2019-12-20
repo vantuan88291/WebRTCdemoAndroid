@@ -66,6 +66,17 @@
             app:layout_constraintHorizontal_bias="0.50"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_cancel" />
+        <ImageButton
+            android:id="@+id/changeCam"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:tint="#fff"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/_6sdp"
+            android:src="@drawable/ic_switch" />
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

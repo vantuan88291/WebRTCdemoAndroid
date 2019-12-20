@@ -24,4 +24,9 @@ object Utils {
             }
         }
     }
+    fun stopSocketService(context: Context) {
+        if (SocketService.checkrunning) {
+            context.stopService(Intent(context, SocketService::class.java))
+        }
+    }
 }

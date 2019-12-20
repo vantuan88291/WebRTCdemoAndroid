@@ -3,6 +3,7 @@ package com.tuan88291.mvvmpattern.view.activity.videocall
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -39,6 +40,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     private val videoModel: SocketClient by inject()
     private var model: String = ""
     private var task: Disposable? = null
+    private var mAudio: AudioManager? = null
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
@@ -49,15 +51,23 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(videoModel)
+        mAudio = getApplicationContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
         videoModel.setCallback(this)
         checkCameraPermission()
         binding?.endCall?.setOnClickListener {
+            task?.dispose()
             videoModel.endCall(this.model)
             finish()
         }
+        binding?.changeCam?.setOnClickListener {
+            rtcClient?.setFrontCamera()
+        }
     }
-
+    private fun setHeadsetOn() {
+        mAudio?.setSpeakerphoneOn(true)
+        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+    }
     override fun onEndCall() {
         finish()
     }
@@ -73,7 +83,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         if (model != null) {
             this.model = model
             videoModel.onStartCall(model)
-            task = Observable.timer(60000, TimeUnit.MILLISECONDS)
+            task = Observable.timer(40000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -130,6 +140,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         rtcClient?.initSurfaceView(binding?.remoteView!!)
         rtcClient?.initSurfaceView(binding?.localView!!)
         rtcClient?.startLocalVideoCapture(binding?.localView!!)
+        setHeadsetOn()
         checkIsCalling()
 
     }

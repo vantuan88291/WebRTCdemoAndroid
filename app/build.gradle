@@ -76,4 +76,5 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     implementation deps.webrtc
+    implementation deps.support.image
 }

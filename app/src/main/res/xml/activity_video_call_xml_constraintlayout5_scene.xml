@@ -35,6 +35,12 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintHeight_percent="0.3"
             motion:layout_constraintWidth_percent="0.4"/>
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="@+id/remoteView"
+            android:layout_width="wrap_content"
+            android:id="@+id/imageButton"
+            motion:layout_constraintTop_toTopOf="@+id/remoteView" />
     </ConstraintSet>
 
 </MotionScene>
