@@ -106,9 +106,11 @@ class RTCClient(
         peerConnection?.setAudioPlayout(true)
     }
 
-    private fun PeerConnection.call(sdpObserver: SdpObserver) {
+    private fun PeerConnection.call(sdpObserver: SdpObserver, isVideo: Boolean = true) {
         val constraints = MediaConstraints().apply {
-            mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
+            if (isVideo) {
+                mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
+            }
             mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
         }
 
@@ -133,9 +135,11 @@ class RTCClient(
         }, constraints)
     }
 
-    private fun PeerConnection.answer(sdpObserver: SdpObserver) {
+    private fun PeerConnection.answer(sdpObserver: SdpObserver, isVideo: Boolean = true) {
         val constraints = MediaConstraints().apply {
-            mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
+            if (isVideo) {
+                mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
+            }
             mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
         }
 

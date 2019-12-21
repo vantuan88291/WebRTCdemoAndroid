@@ -10,6 +10,7 @@ object Common {
     val CHANNEL_ID = "Webrtc_app"
     val CHANNEL_ID_FORGROUND = "webrtcdemo"
     val CAMERA_PERMISSION_REQUEST_CODE = 101
+    val AUDIO_PERMISSION_REQUEST_CODE = 104
     val CAMERA_PERMISSION = Manifest.permission.CAMERA
     val AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO
 }

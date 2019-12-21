@@ -1,6 +1,7 @@
 package com.tuan88291.mvvmpattern.view.activity.videocall
 
 import android.app.NotificationManager
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.media.AudioManager
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -22,7 +24,6 @@ import com.tuan88291.mvvmpattern.utils.Common.CAMERA_PERMISSION_REQUEST_CODE
 import com.tuan88291.mvvmpattern.utils.webrtc.AppSdpObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.PeerConnectionObserver
 import com.tuan88291.mvvmpattern.utils.webrtc.RTCClient
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -31,7 +32,6 @@ import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.SessionDescription
 import org.koin.android.ext.android.inject
-import org.reactivestreams.Subscription
 import java.util.concurrent.TimeUnit
 
 class VideoCall : BaseActivity(), SignallingClientListener {
@@ -41,6 +41,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     private var model: String = ""
     private var task: Disposable? = null
     private var mAudio: AudioManager? = null
+    private var isSpeaker: Boolean = true
     private val sdpObserver = object : AppSdpObserver() {
         override fun onCreateSuccess(p0: SessionDescription?) {
             super.onCreateSuccess(p0)
@@ -49,6 +50,7 @@ class VideoCall : BaseActivity(), SignallingClientListener {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(videoModel)
         mAudio = getApplicationContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -63,9 +65,24 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         binding?.changeCam?.setOnClickListener {
             rtcClient?.setFrontCamera()
         }
+        binding?.changeMic?.setOnClickListener {
+            if (isSpeaker) {
+                setHeadsetOff()
+            } else {
+                setHeadsetOn()
+            }
+        }
     }
     private fun setHeadsetOn() {
+        isSpeaker = true
+        binding?.changeMic?.setImageResource(R.drawable.ic_speaker)
         mAudio?.setSpeakerphoneOn(true)
+        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+    }
+    private fun setHeadsetOff() {
+        isSpeaker = false
+        binding?.changeMic?.setImageResource(R.drawable.ic_mute)
+        mAudio?.setSpeakerphoneOn(false)
         mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
     }
     override fun onEndCall() {
@@ -183,6 +200,8 @@ class VideoCall : BaseActivity(), SignallingClientListener {
 
     override fun onStop() {
         super.onStop()
+        task?.dispose()
+        videoModel.endCall(this.model)
         rtcClient?.close()
     }
 }

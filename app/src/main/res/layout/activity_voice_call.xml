@@ -11,28 +11,12 @@
         android:background="@drawable/bg_voice"
         tools:context=".view.activity.voicecall.VoiceCall">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/endCall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_32sdp"
-            android:backgroundTint="@color/colorAccent"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.50"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_cancel" />
-
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Calling to Android SDK"
+            android:text="Coming soon"
             android:textColor="#fff"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,5 +56,34 @@
             app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toBottomOf="@+id/avatar"
             android:src="@drawable/my" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/endCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/changeMic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/changeMic"
+            app:srcCompat="@drawable/ic_cancel" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/changeMic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_mute"
+            app:backgroundTint="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/endCall"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
