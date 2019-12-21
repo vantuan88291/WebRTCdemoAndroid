@@ -23,15 +23,13 @@ open class BaseActivity : AppCompatActivity(), BaseView {
 
     protected fun addFragment(fragment: Fragment?) {
         if (fragment != null) {
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.setCustomAnimations(
-                android.R.anim.fade_in,
-                android.R.anim.fade_out
-            )
-            fragmentTransaction.replace(R.id.contentHome, fragment)
-            fragmentTransaction.addToBackStack(fragment.javaClass.simpleName)
-            fragmentTransaction.commitAllowingStateLoss()
+            try {
+                    val ft = supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.contentHome, fragment, "tag")
+                    ft.commit()
+            } catch (e: Exception) {
+
+            }
         }
     }
 

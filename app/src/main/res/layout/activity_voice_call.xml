@@ -68,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/changeMic"
-            app:srcCompat="@drawable/ic_cancel" />
+            app:srcCompat="@drawable/ic_close" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/changeMic"

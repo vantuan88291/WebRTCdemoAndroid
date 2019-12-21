@@ -2,10 +2,11 @@
     <string name="app_name">WebRTC Android</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Call Video</string>
+    <string name="nav_header_subtitle">Call Video using WebRTC</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Stop</string>
+    <string name="action_settings">Logout</string>
+    <string name="stream">Live Stream</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

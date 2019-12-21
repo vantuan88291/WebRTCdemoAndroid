@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.tuan88291.mvvmpattern.view.activity.MainActivity
+import com.tuan88291.mvvmpattern.view.activity.main.MainActivity
 
 abstract class BaseFragment : Fragment(), BaseView {
     private var context: MainActivity? = null

@@ -8,26 +8,27 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.tuan88291.mvvmpattern.BaseFragment
 import com.tuan88291.mvvmpattern.R
 import com.tuan88291.mvvmpattern.data.local.model.DataChat
-import com.tuan88291.mvvmpattern.databinding.AboutFragmentBinding
+import com.tuan88291.mvvmpattern.databinding.ChatFragmentBinding
 import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
 import com.tuan88291.mvvmpattern.view.activity.voicecall.VoiceCall
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ChatFragment : BaseFragment() {
-    private var binding: AboutFragmentBinding? = null
+    private var binding: ChatFragmentBinding? = null
     private val chatViewModel: ChatViewModel by viewModel()
     override fun setView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.about_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.chat_fragment, container, false)
         return binding!!.getRoot()
     }
 
@@ -42,35 +43,38 @@ class ChatFragment : BaseFragment() {
         chatViewModel.getLoading().observe(this, Observer<Boolean> { this.loading(it) })
         chatViewModel.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
         chatViewModel.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
-        binding?.send?.setOnClickListener {
-            if (binding?.input?.text?.toString()!! == "") return@setOnClickListener
-            chatViewModel.sendMsg(binding?.input?.text?.toString()!!)
-            binding?.input?.setText("")
+        binding?.apply {
+            send.setOnClickListener {
+                if (input.text?.toString()!! == "") return@setOnClickListener
+                chatViewModel.sendMsg(input.text?.toString()!!)
+                input.setText("")
+            }
+            input.addTextChangedListener(object : TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    chatViewModel.emitTyping()
+                }
+
+            })
+            list.clickCall = {item: DataChat, isVideo: Boolean ->
+                if (isVideo) {
+                    val intent = Intent(mContext(), VideoCall::class.java)
+                    intent.putExtra("model", item.name)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(mContext(), VoiceCall::class.java)
+                    intent.putExtra("model", item.name)
+                    startActivity(intent)
+                }
+            }
         }
-        binding?.input?.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
 
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                chatViewModel.emitTyping()
-            }
-
-        })
-        binding?.list?.clickCall = {item: DataChat, isVideo: Boolean ->
-            if (isVideo) {
-                val intent = Intent(mContext(), VideoCall::class.java)
-                intent.putExtra("model", item.name)
-                startActivity(intent)
-            } else {
-                val intent = Intent(mContext(), VoiceCall::class.java)
-                intent.putExtra("model", item.name)
-                startActivity(intent)
-            }
-        }
         mContext()?.setUpTyping()
     }
 

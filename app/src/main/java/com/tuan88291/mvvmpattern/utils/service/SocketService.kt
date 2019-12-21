@@ -8,9 +8,7 @@ import android.graphics.Color
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import com.tuan88291.mvvmpattern.R
@@ -19,7 +17,7 @@ import com.tuan88291.mvvmpattern.utils.Common.CHANNEL_ID_FORGROUND
 import com.tuan88291.mvvmpattern.utils.Common.CHANNEL_NAME
 import com.tuan88291.mvvmpattern.utils.Common.NOTIFY_ID
 import com.tuan88291.mvvmpattern.utils.broadcast.HandlerService
-import com.tuan88291.mvvmpattern.view.activity.MainActivity
+import com.tuan88291.mvvmpattern.view.activity.main.MainActivity
 import com.tuan88291.mvvmpattern.view.activity.videocall.VideoCall
 import io.socket.client.Socket
 import io.socket.emitter.Emitter

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".App"
@@ -20,7 +20,10 @@
         android:usesCleartextTraffic="true">
         <activity
             android:theme="@style/AppTheme.NoActionBar"
-            android:name=".view.activity.voicecall.VoiceCall"></activity>
+            android:name=".view.activity.livestream.LiveStream" />
+        <activity
+            android:name=".view.activity.voicecall.VoiceCall"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.videocall.VideoCall"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -30,7 +33,7 @@
             android:required="false" />
 
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".view.activity.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
