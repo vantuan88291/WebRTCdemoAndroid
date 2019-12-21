@@ -6,7 +6,7 @@
     <data>
         <variable
             name="userChat"
-            type="com.tuan88291.mvvmpattern.data.local.model.DataChat" />
+            type="com.tuan88291.webrtcdemo.data.local.model.DataChat" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

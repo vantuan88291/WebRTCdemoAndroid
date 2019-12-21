@@ -3,7 +3,7 @@ ext.versions = [
         compile_sdk: 29,
         publish_version: "1.0",
         publish_version_code: 1,
-        package: "com.tuan88291.mvvmpattern",
+        package: "com.tuan88291.webrtcdemo",
         kotlin_version: "1.3.61"
 ]
 ext.arch = [

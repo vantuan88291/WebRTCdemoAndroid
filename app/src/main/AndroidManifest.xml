@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tuan88291.mvvmpattern">
+    package="com.tuan88291.webrtcdemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -18,9 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".view.activity.livestream.LiveStream" />
         <activity
             android:name=".view.activity.voicecall.VoiceCall"
             android:theme="@style/AppTheme.NoActionBar" />
