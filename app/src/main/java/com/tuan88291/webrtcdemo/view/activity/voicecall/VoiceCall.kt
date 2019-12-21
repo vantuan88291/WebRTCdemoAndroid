@@ -49,11 +49,11 @@ class VoiceCall : AppCompatActivity(), SignallingClientListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(videoModel)
+//        lifecycle.addObserver(videoModel)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_voice_call)
         mAudio = getApplicationContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
         videoModel.setCallback(this)
-        checkVoicePermission()
+//        checkVoicePermission()
         binding?.changeMic?.setOnClickListener {
             if (isSpeaker) {
                 setHeadsetOff()
@@ -106,14 +106,14 @@ class VoiceCall : AppCompatActivity(), SignallingClientListener {
     private fun setHeadsetOn() {
         isSpeaker = true
         binding?.changeMic?.setImageResource(R.drawable.ic_speaker)
-        mAudio?.setSpeakerphoneOn(true)
-        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+//        mAudio?.setSpeakerphoneOn(true)
+//        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
     }
     private fun setHeadsetOff() {
         isSpeaker = false
         binding?.changeMic?.setImageResource(R.drawable.ic_mute)
-        mAudio?.setSpeakerphoneOn(false)
-        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+//        mAudio?.setSpeakerphoneOn(false)
+//        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
     }
 
     override fun onEndCall() {
