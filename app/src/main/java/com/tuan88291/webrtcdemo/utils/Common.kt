@@ -3,7 +3,7 @@ package com.tuan88291.webrtcdemo.utils
 import android.Manifest
 
 object Common {
-    val DOMAIN = "https://reqres.in/api/"
+    val DOMAIN = "http://192.168.0.162:3000"
     val SHARED_PREFERENCE_NAME = "AppName"
     val NOTIFY_ID = 1273485
     val CHANNEL_NAME = "WebrtcApp"

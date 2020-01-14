@@ -9,6 +9,7 @@ import com.tuan88291.webrtcdemo.data.local.room.livedata.iDBRepository
 import com.tuan88291.webrtcdemo.data.remote.ApiGenerator
 import com.tuan88291.webrtcdemo.data.remote.service.ServiceApi
 import com.tuan88291.webrtcdemo.data.remote.service.iServiceApi
+import com.tuan88291.webrtcdemo.utils.Common.DOMAIN
 import com.tuan88291.webrtcdemo.view.activity.videocall.SocketClient
 import com.tuan88291.webrtcdemo.view.fragment.chat.ChatViewModel
 import io.socket.client.IO
@@ -32,7 +33,7 @@ val socketModule = module {
     single {
         val opts = IO.Options()
         opts.query = "model=" + Build.MODEL
-        IO.socket("http://192.168.31.196:3000", opts)
+        IO.socket(DOMAIN, opts)
     }
     factory { SocketClient(get()) }
 }

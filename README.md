@@ -36,8 +36,8 @@ packagename
 
 All lib in ```dependencies.gradle```
 
-Change your wifi IP address at AppModule.kt:
+Change your wifi IP address at Common.kt:
 
-```IO.socket("http://192.168.0.162:3000", opts)```
+```DOMAIN = "http://192.168.0.162:3000"```
 
 To use socket for signal Server, clone project and setup node server: https://github.com/vantuan88291/WebRTCsignalServer

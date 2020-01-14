@@ -8,9 +8,11 @@ ext.versions = [
 ]
 ext.arch = [
         koin: '2.0.1',
-        room: '2.2.2',
-        retrofit: '2.6.2',
-        lifecycler: '2.1.0'
+        room: '2.2.3',
+        retrofit: '2.7.1',
+        lifecycler: '2.1.0',
+        logging: '4.3.0',
+        constrainlayout: '2.0.0-beta4'
 ]
 ext.deps = [
         gradle_plugins: [
@@ -29,7 +31,7 @@ ext.deps = [
                 retrofit2: "com.squareup.retrofit2:retrofit:$arch.retrofit",
                 rx_retrofit: "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0",
                 converter: "com.squareup.retrofit2:converter-gson:$arch.retrofit",
-                logging: "com.squareup.okhttp3:logging-interceptor:4.2.2",
+                logging: "com.squareup.okhttp3:logging-interceptor:$arch.logging",
                 socket: "io.socket:socket.io-client:1.0.0"
 
         ],
@@ -51,7 +53,7 @@ ext.deps = [
         ],
         support: [
                 app_compat: "androidx.appcompat:appcompat:1.1.0",
-                constraint_layout: "androidx.constraintlayout:constraintlayout:2.0.0-beta3",
+                constraint_layout: "androidx.constraintlayout:constraintlayout:$arch.constrainlayout",
                 material: "com.google.android.material:material:1.0.0",
                 core: "androidx.core:core-ktx:1.2.0-rc01",
                 kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin_version",

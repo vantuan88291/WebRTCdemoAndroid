@@ -46,7 +46,6 @@ dependencies {
     implementation deps.support.app_compat
     implementation deps.support.core
     implementation deps.support.material
-    implementation deps.support.constraint_layout
     testImplementation deps.test.junit
     androidTestImplementation deps.test.runner
     androidTestImplementation deps.test.core
@@ -58,7 +57,6 @@ dependencies {
     implementation deps.resful.rx_retrofit
     implementation deps.resful.retrofit2
     implementation deps.resful.logd
-    implementation deps.resful.logging
     implementation deps.db.runtime
     kapt deps.db.compiler
     androidTestImplementation deps.db.test
