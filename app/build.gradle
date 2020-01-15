@@ -47,6 +47,7 @@ dependencies {
     implementation deps.support.core
     implementation deps.support.material
     testImplementation deps.test.junit
+    testImplementation deps.test.mock
     androidTestImplementation deps.test.runner
     androidTestImplementation deps.test.core
     implementation deps.support.sdp
