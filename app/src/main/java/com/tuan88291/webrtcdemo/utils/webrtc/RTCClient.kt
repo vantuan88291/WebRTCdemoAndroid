@@ -2,19 +2,7 @@ package com.tuan88291.webrtcdemo.utils.webrtc
 
 import android.app.Application
 import android.content.Context
-import org.webrtc.Camera2Enumerator
-import org.webrtc.DefaultVideoDecoderFactory
-import org.webrtc.DefaultVideoEncoderFactory
-import org.webrtc.EglBase
-import org.webrtc.IceCandidate
-import org.webrtc.MediaConstraints
-import org.webrtc.PeerConnection
-import org.webrtc.PeerConnectionFactory
-import org.webrtc.SdpObserver
-import org.webrtc.SessionDescription
-import org.webrtc.SurfaceTextureHelper
-import org.webrtc.SurfaceViewRenderer
-import org.webrtc.VideoCapturer
+import org.webrtc.*
 
 class RTCClient(
     context: Application,
