@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.support.kotlin
+    implementation deps.support.constraint_layout
     implementation deps.support.app_compat
     implementation deps.support.core
     implementation deps.support.material
@@ -74,4 +75,5 @@ dependencies {
     }
     implementation deps.webrtc
     implementation deps.support.image
+    implementation deps.resful.logging
 }
