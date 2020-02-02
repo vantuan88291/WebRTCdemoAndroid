@@ -27,7 +27,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     var binding: ActivityMainBinding? = null
     private var autodis: AutoDisposable? =  null
-    private var rtcClient: RTCClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startSocketService(this)
