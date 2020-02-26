@@ -38,11 +38,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        binding?.drawerLayout?.addDrawerListener(toggle)
-        toggle.syncState()
+        binding?.let {
+            it.drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
 
-        binding?.navView?.setNavigationItemSelectedListener(this)
-        binding?.appBar?.title?.text = "Chat"
+            it.navView.setNavigationItemSelectedListener(this)
+            it.appBar.title.text = "Chat"
+        }
         addFragment(ChatFragment())
     }
 
@@ -54,8 +56,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
     fun setTyping(msg: String) {
-        binding?.appBar?.typing?.visibility = View.VISIBLE
-        binding?.appBar?.typing?.text = "$msg is typing..."
+        binding?.appBar?.apply {
+           typing.visibility = View.VISIBLE
+           typing.text = "$msg is typing..."
+        }
         setUpTyping()
     }
 

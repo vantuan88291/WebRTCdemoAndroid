@@ -87,11 +87,15 @@ class RTCClient(
         val localVideoTrack = peerConnectionFactory.createVideoTrack(LOCAL_TRACK_ID, localVideoSource)
         localVideoTrack.addSink(localVideoOutput)
         val localStream = peerConnectionFactory.createLocalMediaStream(LOCAL_STREAM_ID)
-        localStream.addTrack(localVideoTrack)
-        localStream.addTrack(localAudioTrack)
-        peerConnection?.addStream(localStream)
-        peerConnection?.setAudioRecording(true)
-        peerConnection?.setAudioPlayout(true)
+        with(localStream) {
+            addTrack(localVideoTrack)
+            addTrack(localAudioTrack)
+        }
+        peerConnection?.run {
+            addStream(localStream)
+            setAudioRecording(true)
+            setAudioPlayout(true)
+        }
     }
 
     private fun PeerConnection.call(sdpObserver: SdpObserver, isVideo: Boolean = true) {

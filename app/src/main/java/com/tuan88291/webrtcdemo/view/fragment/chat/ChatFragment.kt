@@ -38,10 +38,13 @@ class ChatFragment : BaseFragment() {
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.list?.setmId(Build.MODEL)
-        chatViewModel.getTyping().observe(this, Observer<String> { this.onTyping(it) })
-        chatViewModel.getLoading().observe(this, Observer<Boolean> { this.loading(it) })
-        chatViewModel.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
-        chatViewModel.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
+
+        chatViewModel.let {chat ->
+            chat.getTyping().observe(this, Observer<String> { this.onTyping(it) })
+            chat.getLoading().observe(this, Observer<Boolean> { this.loading(it) })
+            chat.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
+            chat.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
+        }
         binding?.apply {
             send.setOnClickListener {
                 if (input.text?.toString()!! == "") return@setOnClickListener

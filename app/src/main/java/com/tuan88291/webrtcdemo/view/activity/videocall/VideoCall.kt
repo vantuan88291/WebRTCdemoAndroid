@@ -46,41 +46,49 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        getWindow().run {
+            setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(videoModel)
         mAudio = getApplicationContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_call)
         videoModel.setCallback(this)
         checkCameraPermission()
-        binding?.endCall?.setOnClickListener {
-            task?.dispose()
-            videoModel.endCall(this.model)
-            finish()
-        }
-        binding?.changeCam?.setOnClickListener {
-            rtcClient?.setFrontCamera()
-        }
-        binding?.changeMic?.setOnClickListener {
-            if (isSpeaker) {
-                setHeadsetOff()
-            } else {
-                setHeadsetOn()
+        binding?.let {
+            it.endCall.setOnClickListener {
+                task?.dispose()
+                videoModel.endCall(this.model)
+                finish()
+            }
+            it.changeCam.setOnClickListener {
+                rtcClient?.setFrontCamera()
+            }
+            it.changeMic.setOnClickListener {
+                if (isSpeaker) {
+                    setHeadsetOff()
+                } else {
+                    setHeadsetOn()
+                }
             }
         }
     }
     private fun setHeadsetOn() {
         isSpeaker = true
         binding?.changeMic?.setImageResource(R.drawable.ic_speaker)
-        mAudio?.setSpeakerphoneOn(true)
-        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+        mAudio?.run {
+            setSpeakerphoneOn(true)
+            setMode(AudioManager.MODE_IN_COMMUNICATION)
+        }
     }
     private fun setHeadsetOff() {
         isSpeaker = false
         binding?.changeMic?.setImageResource(R.drawable.ic_mute)
-        mAudio?.setSpeakerphoneOn(false)
-        mAudio?.setMode(AudioManager.MODE_IN_COMMUNICATION)
+        mAudio?.run {
+            setSpeakerphoneOn(false)
+            setMode(AudioManager.MODE_IN_COMMUNICATION)
+        }
     }
     override fun onEndCall() {
         finish()
@@ -116,8 +124,10 @@ class VideoCall : BaseActivity(), SignallingClientListener {
         rtcClient?.call(sdpObserver)
     }
     override fun onOfferReceived(data: SessionDescription) {
-        rtcClient?.onRemoteSessionReceived(data)
-        rtcClient?.answer(sdpObserver)
+        rtcClient?.run {
+            onRemoteSessionReceived(data)
+            answer(sdpObserver)
+        }
         binding?.constraintLayout5?.transitionToEnd()
     }
     override fun onAnswerReceived(data: SessionDescription) {
@@ -151,9 +161,11 @@ class VideoCall : BaseActivity(), SignallingClientListener {
                 }
             }
         )
-        rtcClient?.initSurfaceView(binding?.remoteView!!)
-        rtcClient?.initSurfaceView(binding?.localView!!)
-        rtcClient?.startLocalVideoCapture(binding?.localView!!)
+        rtcClient?.run {
+            initSurfaceView(binding?.remoteView!!)
+            initSurfaceView(binding?.localView!!)
+            startLocalVideoCapture(binding?.localView!!)
+        }
         setHeadsetOn()
         checkIsCalling()
 

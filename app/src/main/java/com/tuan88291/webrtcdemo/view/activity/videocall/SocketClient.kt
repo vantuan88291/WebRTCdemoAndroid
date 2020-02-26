@@ -18,9 +18,11 @@ class SocketClient(private val mSocket: Socket): LifecycleObserver {
     var callbacks: SignallingClientListener? = null
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreateSocket() {
-        mSocket.on("Received", onReceived)
-        mSocket.on("onAnswerAccept", onAnswerAccept)
-        mSocket.on("onEndCall", onEndCall)
+        mSocket.run {
+            on("Received", onReceived)
+            on("onAnswerAccept", onAnswerAccept)
+            on("onEndCall", onEndCall)
+        }
     }
     fun setCallback(callback: SignallingClientListener) {
         this.callbacks = callback

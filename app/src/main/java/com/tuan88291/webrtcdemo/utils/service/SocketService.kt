@@ -51,9 +51,11 @@ class SocketService : LifecycleService() {
 
     }
     private fun setupSocket() {
-        mSocket.connect()
-        mSocket.on("inComing", onInComing)
-        mSocket.on("onEndCall", onEndCall)
+        mSocket.run {
+            connect()
+            on("inComing", onInComing)
+            on("onEndCall", onEndCall)
+        }
     }
     private val onInComing = object : Emitter.Listener {
 
@@ -103,37 +105,41 @@ class SocketService : LifecycleService() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
-        builder.setContentTitle("One call comming...")
-            .setSmallIcon(R.drawable.ic_call)
-            .setContentText("$model is calling you...")
-            .setDefaults(Notification.DEFAULT_SOUND)
-            .setAutoCancel(true)
-            .setSound(soundUri)
-            .setContentIntent(pendingIntent)
-            .setTicker("Notifications")
-            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
+        return builder.also {
+            it.setContentTitle("One call comming...")
+                .setSmallIcon(R.drawable.ic_call)
+                .setContentText("$model is calling you...")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setAutoCancel(true)
+                .setSound(soundUri)
+                .setContentIntent(pendingIntent)
+                .setTicker("Notifications")
+                .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
 
-        val dismissIntent = Intent(this, HandlerService::class.java)
-        dismissIntent.putExtra("id", idNotify)
-        dismissIntent.putExtra("model", model)
-        dismissIntent.putExtra("type", "cancel")
-        val pendingDismissIntent = PendingIntent.getBroadcast(this, idNotify,
-            dismissIntent, 0);
+            val dismissIntent = Intent(this, HandlerService::class.java)
+            with(dismissIntent) {
+                putExtra("id", idNotify)
+                putExtra("model", model)
+                putExtra("type", "cancel")
+            }
+            val pendingDismissIntent = PendingIntent.getBroadcast(this, idNotify,
+                dismissIntent, 0);
 
-        val aCceptintent = Intent(this, VideoCall::class.java)
-        aCceptintent.putExtra("id", idNotify)
-        aCceptintent.putExtra("model", model)
-        val answerIntent = PendingIntent.getActivity(this, idNotify, aCceptintent, 0)
+            val aCceptintent = Intent(this, VideoCall::class.java)
+            with(aCceptintent) {
+                putExtra("id", idNotify)
+                putExtra("model", model)
+            }
+            val answerIntent = PendingIntent.getActivity(this, idNotify, aCceptintent, 0)
 
-        val dismissAction = NotificationCompat.Action(R.drawable.ic_cancel,
-            "Denied", pendingDismissIntent)
+            val dismissAction = NotificationCompat.Action(R.drawable.ic_cancel,
+                "Denied", pendingDismissIntent)
 
-        val okAction = NotificationCompat.Action(R.drawable.ic_answer,
-            "Answer", answerIntent)
-        builder.addAction(dismissAction)
-        builder.addAction(okAction)
-
-        return builder.build()
+            val okAction = NotificationCompat.Action(R.drawable.ic_answer,
+                "Answer", answerIntent)
+            it.addAction(dismissAction)
+            it.addAction(okAction)
+        }.build()
     }
     private fun setNotification(): Notification {
 
@@ -151,7 +157,7 @@ class SocketService : LifecycleService() {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
             PendingIntent.FLAG_UPDATE_CURRENT)
-        builder.setContentIntent(contentIntent)
+        builder.setContentIntent(contentIntent).build()
         return builder.build()
     }
 
