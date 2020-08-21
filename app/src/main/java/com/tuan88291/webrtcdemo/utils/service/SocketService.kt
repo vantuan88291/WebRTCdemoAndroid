@@ -31,7 +31,7 @@ class SocketService : LifecycleService() {
     companion object checkIsLive {
         var checkrunning: Boolean = false
     }
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
         return super.onBind(intent)
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -112,6 +112,7 @@ class SocketService : LifecycleService() {
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
                 .setSound(soundUri)
+                .setFullScreenIntent(pendingIntent, true)
                 .setContentIntent(pendingIntent)
                 .setTicker("Notifications")
                 .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))

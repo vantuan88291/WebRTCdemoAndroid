@@ -40,10 +40,7 @@ class ChatFragment : BaseFragment() {
         binding?.list?.setmId(Build.MODEL)
 
         chatViewModel.let {chat ->
-            chat.getTyping().observe(this, Observer<String> { this.onTyping(it) })
-            chat.getLoading().observe(this, Observer<Boolean> { this.loading(it) })
-            chat.getDataChat().observe(this, Observer<DataChat> { this.processData(it) })
-            chat.getAllDataChat().observe(this, Observer<MutableList<DataChat>> { this.processAllData(it) })
+            chat.getChatState().observe(this, Observer<ChatState> { this.onChangeState(it) })
         }
         binding?.apply {
             send.setOnClickListener {
@@ -80,6 +77,14 @@ class ChatFragment : BaseFragment() {
         mContext()?.setUpTyping()
     }
 
+    private fun onChangeState(state: ChatState) {
+        when (state) {
+            is ChatState.Loading -> loading(state.loading)
+            is ChatState.Success<*> -> processData(state.data as DataChat)
+            is ChatState.Typing -> onTyping(state.listTyping)
+            is ChatState.AllData<*> -> processAllData(state.data as MutableList<DataChat>)
+        }
+    }
     private fun processData(item: DataChat) {
         binding?.list?.setData(item)
     }
