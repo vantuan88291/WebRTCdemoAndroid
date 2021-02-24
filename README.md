@@ -3,8 +3,10 @@
 Library: DI with koin, RXjava, mvvm, webrtc, Socket IO
 
 ## Overview
-![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img2.jpeg)![WebRTCdemoAndroid](https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img1.jpeg)
-
+<div>
+<img src='https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img2.jpeg' width='250"'>
+<img src='https://github.com/vantuan88291/WebRTCdemoAndroid/raw/master/img1.jpeg' width='250"'>
+</div>
 
 Play Store: https://play.google.com/store/apps/details?id=com.tuan88291.webrtcdemo
 
