@@ -44,3 +44,6 @@ Change your wifi IP address at Common.kt:
 ```DOMAIN = "http://192.168.0.162:3000"```
 
 To use socket for signal Server, clone project and setup node server: https://github.com/vantuan88291/WebRTCsignalServer
+
+## React Native version
+https://github.com/vantuan88291/WebRTC_React_Native
