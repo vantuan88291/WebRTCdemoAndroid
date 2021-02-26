@@ -49,3 +49,5 @@ To use socket for signal Server, clone project and setup node server: https://gi
 
 ## React Native version
 https://github.com/vantuan88291/WebRTC_React_Native
+## Flutter version
+https://github.com/vantuan88291/webrtc_flutter_demo_bloc
